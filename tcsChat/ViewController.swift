@@ -8,11 +8,50 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var TextFieldName: UITextField!
+    
+    @IBOutlet weak var TextViewAbout: UITextView!
+    @IBAction func ButtonRed(_ sender: Any) {
+        TextViewAbout.textColor = UIColor.red
+    }
+    @IBAction func ButtonPurple(_ sender: Any) {
+        TextViewAbout.textColor = UIColor.purple
+    }
+    @IBAction func ButtonGreen(_ sender: Any) {
+        TextViewAbout.textColor = UIColor.green
+    }
+    @IBAction func ButtonBlue(_ sender: Any) {
+        TextViewAbout.textColor = UIColor.blue
+    }
+    @IBAction func ButtonBlack(_ sender: Any) {
+        TextViewAbout.textColor = UIColor.black
+    }
+    @IBAction func ButtonSave(_ sender: Any) {
+        print("Сохранено")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard)))
+        
+        self.TextFieldName.delegate = self
+        //зачем это сверху нужно?
+        TextFieldName.returnKeyType = UIReturnKeyType.done
+        
+       // var textColor: UIColor;
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        // Почему так нельзя?TextFieldName.endEiditing(true)
+        self.view.endEditing(true)
+        return false
     }
 
     override func didReceiveMemoryWarning() {
