@@ -30,6 +30,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     @IBAction func ButtonSave(_ sender: Any) {
         print("Сохранено")
+        performSegue(withIdentifier: "SaveButton", sender: self)
+        //КАК СДЕЛАТЬ ЧТОБЫ tabbar верунлась
     }
     
     
@@ -39,17 +41,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard)))
         
         self.TextFieldName.delegate = self
-        //зачем это сверху нужно?
         TextFieldName.returnKeyType = UIReturnKeyType.done
         
-       // var textColor: UIColor;
+        
     }
     
     func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Почему так нельзя?TextFieldName.endEiditing(true)
         self.view.endEditing(true)
         return false
     }
