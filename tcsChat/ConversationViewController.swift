@@ -21,10 +21,29 @@ class ConversationViewController: UIViewController, MessageCellConfiguration, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.dataSource = self
-        //Еще не разобрался
+        //Еще не разобрался как взять элемент из протокола другого класса и зачем тогда протокол нужен
         tabBarItem.badgeValue = "Chat"
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
+    }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
