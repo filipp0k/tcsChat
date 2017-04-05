@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ChatViewCell: UITableViewCell {
+class ChatViewCell: UITableViewCell, MessageCellConfiguration {
+    
+    var cellText: String?
     
     @IBOutlet weak var messagef: UILabel!
     

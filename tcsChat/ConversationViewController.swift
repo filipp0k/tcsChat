@@ -9,12 +9,11 @@
 import UIKit
 
 protocol MessageCellConfiguration : class {
-    var text : String? {get set}
+    var cellText : String? {get set}
 }
 
 
-class ConversationViewController: UIViewController, MessageCellConfiguration, UITableViewDataSource {
-    internal var text: String?
+class ConversationViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -22,7 +21,7 @@ class ConversationViewController: UIViewController, MessageCellConfiguration, UI
         super.viewDidLoad()
         self.tableView.dataSource = self
         //Еще не разобрался как взять элемент из протокола другого класса и зачем тогда протокол нужен
-        tabBarItem.badgeValue = "Chat"
+        navigationItem.title = "Chat"
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
