@@ -22,18 +22,45 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBAction func ButtonGreen(_ sender: Any) {
         TextViewAbout.textColor = UIColor.green
     }
+    @IBOutlet weak var ActivityIndicator: UIActivityIndicatorView!
     @IBAction func ButtonBlue(_ sender: Any) {
         TextViewAbout.textColor = UIColor.blue
     }
     @IBAction func ButtonBlack(_ sender: Any) {
         TextViewAbout.textColor = UIColor.black
     }
-    @IBAction func ButtonSave(_ sender: Any) {
-        print("Сохранено")
-        performSegue(withIdentifier: "SaveButton", sender: self)
-        //КАК СДЕЛАТЬ ЧТОБЫ tabbar верунлась
+    @IBAction func ButtonOperation(_ sender: Any) {
+     let operationQueue = OperationQueue()
+        operationQueue.qualityOfService = .utility
+        operationQueue.addOperation {
+            self.ActivityIndicator.alpha = 1;
+            self.userDefaults.set(self.TextFieldName.text, forKey: "Data");
+            self.userDefaults.synchronize()
+            
+            self.present(self.alertController, animated: true, completion: nil)
+            self.ActivityIndicator.alpha = 0;
+        }
     }
     
+    
+    @IBAction func ButtonSave(_ sender: Any) {
+        let gQueue = DispatchQueue.global(qos: .utility)
+        gQueue.async{
+            self.userDefaults.set(self.TextFieldName.text, forKey: "Data");
+            self.userDefaults.synchronize()
+            self.present(self.alertController, animated: true, completion: nil)
+        }
+        
+        print("Сохранено")
+        //performSegue(withIdentifier: "SaveButton", sender: self)
+        // ААААА ПОЧЕМУ ОН ВСЕ РАВНО ПРОИСХОДИТ
+    }
+    
+    var userDefaults = UserDefaults.standard;
+    
+    let alertController = UIAlertController(title: "Save done", message:
+        "", preferredStyle: UIAlertControllerStyle.alert)
+    //ААААА КАК ЕГО УБРАТЬ?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +69,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         self.TextFieldName.delegate = self
         TextFieldName.returnKeyType = UIReturnKeyType.done
+        
+        if self.userDefaults.value(forKey: "Data") != nil {
+            TextFieldName.text = userDefaults.value(forKey: "Data") as? String
+        }
+        
+        //let mainQueue = DispatchQueue.main
         
         
     }
